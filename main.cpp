@@ -403,7 +403,6 @@ int main()
 
     sf::Clock *bullettime = new sf::Clock;
     sf::Clock *czas = new sf::Clock;
-    sf::Clock timer;
 
     while (program.isOpen())
     {
@@ -510,8 +509,17 @@ int main()
                 PlayerOne->move(prad.returnv().x*elapsed.asSeconds(),prad.returnv().y*elapsed.asSeconds());
             }
         }
+        if(PlayerOne->getGlobalBounds().intersects(enemy.getGlobalBounds()))
+        {
+            PlayerOne->AddHit();
+            PlayerOne->loseLives();
+            PlayerOne->resetPosition();
+            PlayerOne->LoseMoney(50);
+            wait();
+        }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
         {
+            enemy.resetposition();
             Elementy.clear();
             pociski.clear();
             New_Level(PlayerOne,Elementy,Baza,prad);
@@ -532,15 +540,20 @@ int main()
             program.draw(pi);
         }
 
-        enemy.Animate(elapsed,Elementy,timer);
+        enemy.Animate(elapsed,Elementy);
+        enemy.Bounce(pulapka);
+        enemy.Bounce(start);
+        enemy.Bounce(finish);
+        enemy.IT();
 
+        program.draw(enemy);
         program.draw(start);
         program.draw(finish);
         program.draw(pulapka);
         program.draw(serduszka);
         program.draw(PociskiLicznik);
         program.draw(Zloto);
-        program.draw(enemy);
+
 
         program.draw(*PlayerOne);
         for(auto &p:pociski)
@@ -552,6 +565,7 @@ int main()
 
         if(finish.getGlobalBounds().intersects(PlayerOne->getGlobalBounds()))
         {
+            enemy.resetposition();
             level ++;
             Elementy.clear();
             pociski.clear();

@@ -8,7 +8,10 @@ class Enemy : public sf::Sprite
 {
 public:
     Enemy(sf::Texture &);
-    void Animate(sf::Time,std::vector<Obiekty> &,sf::Clock &);
+    void Animate(sf::Time,std::vector<Obiekty> &);
+    void resetposition();
+    void Bounce(sf::Sprite &);
+    void IT();
 private:
     int vx;
     int vy;
