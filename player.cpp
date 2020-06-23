@@ -2,6 +2,8 @@
 #include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "spolawniacze.h"
+
 sf::Vector2f Player::returnkierunek()
 {
     return kierunek;
@@ -139,6 +141,8 @@ Player::Player(sf::Texture &baza)
     setPosition(15,570);
     lives_max = 5;
     bullet_max = 5;
+    vx_baza = 100;
+    vy_baza = 100;
 }
 void Player::addMoney(int a)
 {
@@ -147,6 +151,11 @@ void Player::addMoney(int a)
 void Player::showMoney()
 {
      std::cout<<"Ilosc pieniedzy: "<<gold<<std::endl;
+}
+void Player::resetVelocities()
+{
+    velocity_x=vx_baza;
+    velocity_y=vy_baza;
 }
 void Player::upgrade(sf::Texture &a)
 {
@@ -162,6 +171,8 @@ void Player::upgrade(sf::Texture &a)
     velocity_y=150;
     lives_max*=2;
     bullet_max*=2;
+    vx_baza=150;
+    vy_baza=150;
     lives = lives_max;
     bullet = bullet_max;
     afterupgrage=true;
@@ -173,7 +184,7 @@ int Player::retrunMoney()
 }
 void Player::LoseMoney(int a)
 {
-    if(gold<=0)
+    if((gold-a)<=0)
     {
         gold = 0;
     }
@@ -185,6 +196,15 @@ void Player::LoseMoney(int a)
 void Player::loseLives()
 {
     lives--;
+}
+void Player::setvelocities(int a,int b)
+{
+   velocity_x=a;
+   velocity_y=b;
+}
+sf::Vector2f Player::returnvelocities()
+{
+    return sf::Vector2f(velocity_x,velocity_y);
 }
 int Player::returnLives()
 {

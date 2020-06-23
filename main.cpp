@@ -5,11 +5,13 @@
 #include "player.h"
 #include "obiekty.h"
 #include "bullet.h"
+#include "spolawniacze.h"
 #include <time.h>
 #include <cstdlib>
 #include <stdlib.h>
 #include <memory>
 #include <fstream>
+
 void EndGame(const int &a)
 {
     std::fstream plik;
@@ -43,7 +45,7 @@ void wait()
 {    
     sf::sleep(sf::seconds(0.25));
 }
-void New_Level( Player* &PlayerOne, std::vector<Obiekty> &Elementy, const std::vector<Obiekty> &Baza)
+void New_Level( Player* &PlayerOne, std::vector<Obiekty> &Elementy, const std::vector<Obiekty> &Baza, std::vector<Spolawniacze> &prad)
 {
     if(rand()%2)
     {
@@ -75,6 +77,10 @@ void New_Level( Player* &PlayerOne, std::vector<Obiekty> &Elementy, const std::v
             int a=rand()%950+50;
             int b=rand()%550+35;
             pi.setPosition(a,b);
+    }
+    for(auto &prad:prad)
+    {
+        prad.setPosition(rand()%950+50,rand()%400);
     }
 }
 void Menu(const sf::Sprite &background)
@@ -307,6 +313,24 @@ int main()
         return 1;
     }
 
+    sf::Texture gajzer_baza;
+    if (!gajzer_baza.loadFromFile("Inne/Gejzer.png"))
+    {
+        std::cerr << "Could not load texture" << std::endl;
+        return 1;
+    }
+    sf::Texture prad_baza;
+    if (!prad_baza.loadFromFile("Inne/Prad.png"))
+    {
+        std::cerr << "Could not load texture" << std::endl;
+        return 1;
+    }
+    std::vector<Spolawniacze> prad;
+    for(int i=0;i<3;i++)
+    {
+        prad.emplace_back(Spolawniacze(prad_baza));
+    }
+
     sf::Text Zloto;
     Zloto.setFont(czc);
     Zloto.setPosition(0,100);
@@ -347,7 +371,7 @@ int main()
     sf::Sprite finish;
     finish.setTexture(finishb);
     finish.setPosition(985,0);
-    New_Level(PlayerOne,Elementy,Baza);
+    New_Level(PlayerOne,Elementy,Baza,prad);
 
     double level = 1;
 
@@ -403,6 +427,7 @@ int main()
                     PlayerOne->AddHit();
                     PlayerOne->loseLives();
                     PlayerOne->resetPosition();
+                    PlayerOne->LoseMoney(50);
                     wait();
                 }
 
@@ -433,7 +458,6 @@ int main()
 
             }
         }
-
         if((PlayerOne->retrunMoney()>=1000)&&(PlayerOne->returnUpgrade()==false))
         {
             program.draw(upgrade);
@@ -442,7 +466,6 @@ int main()
         {
             PlayerOne->resetPosition();
         }
-
         if(PlayerOne->returnLives()==0)
         {
             std::cout<<"Przegrales, dziekuje za gre"<<std::endl;
@@ -469,10 +492,18 @@ int main()
                 }
             }
         }
+        for(auto &prad:prad)
+        {
+            if(prad.getGlobalBounds().contains(PlayerOne->getPosition()))
+            {
+                PlayerOne->move(prad.returnv().x*elapsed.asSeconds(),prad.returnv().y*elapsed.asSeconds());
+            }
+        }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
         {
             Elementy.clear();
-            New_Level(PlayerOne,Elementy,Baza);
+            pociski.clear();
+            New_Level(PlayerOne,Elementy,Baza,prad);
             reset++;
             wait();
         }
@@ -481,17 +512,22 @@ int main()
         PlayerOne->Bullets(PociskiLicznik);
 
         Zloto.setString(std::to_string(PlayerOne->retrunMoney()));
-
+        for(auto &prad:prad)
+        {
+            program.draw(prad);
+        }
         for(auto &pi:Elementy)
         {
             program.draw(pi);
         }
+
         program.draw(start);
         program.draw(finish);
         program.draw(pulapka);
         program.draw(serduszka);
         program.draw(PociskiLicznik);
         program.draw(Zloto);
+
         program.draw(*PlayerOne);
         for(auto &p:pociski)
         {
@@ -506,7 +542,7 @@ int main()
             Elementy.clear();
             pociski.clear();
             PlayerOne->addMoney(100);
-            New_Level(PlayerOne,Elementy,Baza);
+            New_Level(PlayerOne,Elementy,Baza,prad);
             wait();
         }
 

@@ -7,7 +7,8 @@ SOURCES += \
         bullet.cpp \
         main.cpp \
         obiekty.cpp \
-        player.cpp
+        player.cpp \
+        spolawniacze.cpp
 LIBS += -L"C:/SFML-2.5.1/lib"
 CONFIG(debug, debug|release){
     LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-network-d -lsfml-system-d -lsfml-window-d
@@ -18,5 +19,6 @@ CONFIG(debug, debug|release){
 HEADERS += \
     bullet.h \
     obiekty.h \
-    player.h
+    player.h \
+    spolawniacze.h
 

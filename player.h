@@ -1,9 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <algorithm>
+#include "spolawniacze.h"
 
 class Player : public sf::Sprite
 {
@@ -29,7 +29,10 @@ public:
     void resetBullet();
     int returnBullet();
     void BulletLose();
-private:
+    void setvelocities(int,int);
+    sf::Vector2f returnvelocities();
+    void resetVelocities();
+    private:
     std::string name;
     int lives;
     float velocity_x = 0;
@@ -41,6 +44,8 @@ private:
     sf::Vector2f kierunek=sf::Vector2f(0,0);
     int bullet_max;
     int bullet;
+    int vx_baza;
+    int vy_baza;
 };
 
 #endif // PLAYER_H
