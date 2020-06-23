@@ -6,6 +6,7 @@
 #include "obiekty.h"
 #include "bullet.h"
 #include "spolawniacze.h"
+#include "enemy.h"
 #include <time.h>
 #include <cstdlib>
 #include <stdlib.h>
@@ -331,6 +332,15 @@ int main()
         prad.emplace_back(Spolawniacze(prad_baza));
     }
 
+    sf::Texture enemy_baza;
+    if (!enemy_baza.loadFromFile("Stateczki/StatekPrzeciwnik.png"))
+    {
+        std::cerr << "Could not load texture" << std::endl;
+        return 1;
+    }
+    Enemy enemy(enemy_baza);
+    enemy.setPosition(300,300);
+
     sf::Text Zloto;
     Zloto.setFont(czc);
     Zloto.setPosition(0,100);
@@ -393,6 +403,7 @@ int main()
 
     sf::Clock *bullettime = new sf::Clock;
     sf::Clock *czas = new sf::Clock;
+    sf::Clock timer;
 
     while (program.isOpen())
     {
@@ -521,12 +532,15 @@ int main()
             program.draw(pi);
         }
 
+        enemy.Animate(elapsed,Elementy,timer);
+
         program.draw(start);
         program.draw(finish);
         program.draw(pulapka);
         program.draw(serduszka);
         program.draw(PociskiLicznik);
         program.draw(Zloto);
+        program.draw(enemy);
 
         program.draw(*PlayerOne);
         for(auto &p:pociski)

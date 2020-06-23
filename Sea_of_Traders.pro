@@ -5,6 +5,7 @@ CONFIG -= qt
 INCLUDEPATH += "C:/SFML-2.5.1/include"
 SOURCES += \
         bullet.cpp \
+        enemy.cpp \
         main.cpp \
         obiekty.cpp \
         player.cpp \
@@ -18,6 +19,7 @@ CONFIG(debug, debug|release){
 
 HEADERS += \
     bullet.h \
+    enemy.h \
     obiekty.h \
     player.h \
     spolawniacze.h
