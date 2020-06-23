@@ -24,6 +24,11 @@ public:
     void hearts(sf::Sprite &);
     int returnHit();
     bool returnUpgrade();
+    sf::Vector2f returnkierunek();
+    void Bullets(sf::Sprite &);
+    void resetBullet();
+    int returnBullet();
+    void BulletLose();
 private:
     std::string name;
     int lives;
@@ -33,6 +38,9 @@ private:
     int lives_max;
     bool afterupgrage = false;
     int iloscUderzonychObiektow;
+    sf::Vector2f kierunek=sf::Vector2f(0,0);
+    int bullet_max;
+    int bullet;
 };
 
 #endif // PLAYER_H

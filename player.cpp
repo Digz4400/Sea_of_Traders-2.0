@@ -2,6 +2,10 @@
 #include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+sf::Vector2f Player::returnkierunek()
+{
+    return kierunek;
+}
 bool Player::returnUpgrade()
 {
     return this->afterupgrage;
@@ -9,6 +13,21 @@ bool Player::returnUpgrade()
 int Player::returnHit()
 {
     return iloscUderzonychObiektow;
+}
+void Player::BulletLose()
+{
+    bullet--;
+}
+void Player::Bullets(sf::Sprite &s)
+{
+    if(afterupgrage)
+    {
+        s.setTextureRect(sf::IntRect(0,0,40-4*(bullet_max-bullet),8));
+    }
+    else
+    {
+       s.setTextureRect(sf::IntRect(0,0,40-8*(bullet_max-bullet),8));
+    }
 }
 void Player::hearts(sf::Sprite &s)
 {
@@ -20,6 +39,14 @@ void Player::hearts(sf::Sprite &s)
     {
        s.setTextureRect(sf::IntRect(0,0,80-16*(lives_max-lives),16));
     }
+}
+void Player::resetBullet()
+{
+    bullet=bullet_max;
+}
+int Player::returnBullet()
+{
+    return bullet;
 }
 void Player::resetPosition()
 {
@@ -38,6 +65,7 @@ void Player::Animate(sf::Time elapsed)
             move(0,0);
         }
         setTextureRect(sf::IntRect(32,0,32,32));
+        kierunek=sf::Vector2f(0,-1);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
@@ -50,6 +78,7 @@ void Player::Animate(sf::Time elapsed)
             move(0,0);
         }
             setTextureRect(sf::IntRect(32,64,32,32));
+            kierunek=sf::Vector2f(0,1);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
@@ -62,6 +91,7 @@ void Player::Animate(sf::Time elapsed)
             move(0,0);
         }
          setTextureRect(sf::IntRect(0,32,32,32));
+         kierunek=sf::Vector2f(-1,0);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
@@ -74,22 +104,27 @@ void Player::Animate(sf::Time elapsed)
              move(0,0);
          }
          setTextureRect(sf::IntRect(64,32,32,32));
+         kierunek=sf::Vector2f(1,0);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
          setTextureRect(sf::IntRect(64,0,32,32));
+         kierunek=sf::Vector2f(1,-1);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
          setTextureRect(sf::IntRect(64,64,32,32));
+         kierunek=sf::Vector2f(1,1);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
          setTextureRect(sf::IntRect(0,64,32,32));
+         kierunek=sf::Vector2f(-1,1);
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
          setTextureRect(sf::IntRect(0,0,32,32));
+         kierunek=sf::Vector2f(-1,-1);
     }
 }
 Player::Player(sf::Texture &baza)
@@ -103,6 +138,7 @@ Player::Player(sf::Texture &baza)
     setTextureRect(sf::IntRect(32,32,32,32));
     setPosition(15,570);
     lives_max = 5;
+    bullet_max = 5;
 }
 void Player::addMoney(int a)
 {
@@ -125,7 +161,9 @@ void Player::upgrade(sf::Texture &a)
     velocity_x=150;
     velocity_y=150;
     lives_max*=2;
+    bullet_max*=2;
     lives = lives_max;
+    bullet = bullet_max;
     afterupgrage=true;
     }
 }

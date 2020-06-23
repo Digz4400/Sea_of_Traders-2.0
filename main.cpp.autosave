@@ -306,7 +306,7 @@ int main()
         std::cerr << "Could not load texture" << std::endl;
         return 1;
     }
-
+    sf::Texture gaj
     sf::Text Zloto;
     Zloto.setFont(czc);
     Zloto.setPosition(0,100);

@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 INCLUDEPATH += "C:/SFML-2.5.1/include"
 SOURCES += \
+        bullet.cpp \
         main.cpp \
         obiekty.cpp \
         player.cpp
@@ -15,6 +16,7 @@ CONFIG(debug, debug|release){
 }
 
 HEADERS += \
+    bullet.h \
     obiekty.h \
     player.h
 
