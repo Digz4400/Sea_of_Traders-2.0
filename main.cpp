@@ -508,6 +508,18 @@ int main()
             {
                 PlayerOne->move(prad.returnv().x*elapsed.asSeconds(),prad.returnv().y*elapsed.asSeconds());
             }
+            if(prad.getGlobalBounds().contains(PlayerOne->getPosition().x+PlayerOne->getGlobalBounds().width,PlayerOne->getPosition().y))
+            {
+                PlayerOne->move(prad.returnv().x*elapsed.asSeconds(),prad.returnv().y*elapsed.asSeconds());
+            }
+            if(prad.getGlobalBounds().contains(PlayerOne->getPosition().x,PlayerOne->getPosition().y+PlayerOne->getGlobalBounds().height))
+            {
+                PlayerOne->move(prad.returnv().x*elapsed.asSeconds(),prad.returnv().y*elapsed.asSeconds());
+            }
+            if(prad.getGlobalBounds().contains(PlayerOne->getPosition().x+PlayerOne->getGlobalBounds().width,PlayerOne->getPosition().y+PlayerOne->getGlobalBounds().height))
+            {
+                PlayerOne->move(prad.returnv().x*elapsed.asSeconds(),prad.returnv().y*elapsed.asSeconds());
+            }
         }
         if(PlayerOne->getGlobalBounds().intersects(enemy.getGlobalBounds()))
         {

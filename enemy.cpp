@@ -19,9 +19,23 @@ void Enemy::Animate(sf::Time elapsed, std::vector<Obiekty> &a)
         PozycjaEle = sf::Vector2f(p.getPosition().x+p.getGlobalBounds().width/2,p.getPosition().y+p.getGlobalBounds().height/2);
         double i = std::pow(std::abs(Pozycja.x-PozycjaEle.x),2)+std::pow(std::abs(Pozycja.y-PozycjaEle.y),2);
         if(sqrt(i)<=16*sqrt(2))
-        {
-         kierunek.x=rand()%3-1;
-         kierunek.y=rand()%3-1;
+        {   
+            if(Pozycja.x<PozycjaEle.x)
+            {
+                kierunek.x=rand()%2-1;
+            }
+            if(Pozycja.x>PozycjaEle.x)
+            {
+                kierunek.x=rand()%2;
+            }
+            if(Pozycja.y<PozycjaEle.y)
+            {
+                kierunek.y=rand()%2-1;
+            }
+            if(Pozycja.y>PozycjaEle.y)
+            {
+                kierunek.y=rand()%2;
+            }
         }
     }
     if(this->getPosition().x<0)
